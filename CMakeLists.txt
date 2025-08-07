@@ -25,6 +25,16 @@ cmake_minimum_required(VERSION 3.22)
 set(ASHITA_PROJECT_NAME "exampleplugin")
 project(${ASHITA_PROJECT_NAME} CXX)
 
+# Enable generation of compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Generate .clangd file with the preset's binary directory
+configure_file(
+    ${CMAKE_SOURCE_DIR}/.clangd.in
+    ${CMAKE_SOURCE_DIR}/.clangd
+    @ONLY
+)
+
 # Set the CMAKE module path..
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -83,3 +93,13 @@ endif()
 
 # Note: This must be disabled if compiling with Direct3D calls!
 ashita_sdk_set_linker_enable_safe_seh(${ASHITA_PROJECT_NAME})
+
+# Copy .dll to plugin directory
+if (WIN32)
+    add_custom_command(TARGET ${ASHITA_PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "$<TARGET_FILE:${ASHITA_PROJECT_NAME}>"
+            "$ENV{ASHITA4_PLUGIN_PATH}/${ASHITA_PROJECT_NAME}.dll"
+        COMMENT "Copying .dll to plugin directory"
+    )
+endif()

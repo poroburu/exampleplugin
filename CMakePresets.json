@@ -45,16 +45,24 @@
             }
         },
         {
+            "name": "HorizonXI",
+            "hidden": true,
+            "environment": {
+                "ASHITA4_PLUGIN_PATH": "${env:APPDATA}/HorizonXI-Launcher/HorizonXI/Game/plugins",
+                "ASHITA4_SDK_PATH": "${env:ASHITA4_PLUGIN_PATH}/sdk"
+            }
+        },
+        {
             "name": "x86-debug-win",
             "displayName": "Debug (x86)",
             "description": "Debug build for Windows (x86).",
-            "inherits": ["win-ninja", "x86", "Debug"]
+            "inherits": ["win-ninja", "x86", "Debug", "HorizonXI"]
         },
         {
             "name": "x86-release-win",
             "displayName": "Release (x86)",
             "description": "Release build for Windows (x86).",
-            "inherits": ["win-ninja", "x86", "Release"]
+            "inherits": ["win-ninja", "x86", "Release", "HorizonXI"]
         }
     ],
     "buildPresets": []
